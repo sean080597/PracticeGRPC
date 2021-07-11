@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Serializer {
-
     public void writeBinaryFile(Laptop laptop, String filename) throws IOException {
         FileOutputStream outputStream = new FileOutputStream(filename);
         laptop.writeTo(outputStream);

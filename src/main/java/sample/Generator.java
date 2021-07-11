@@ -8,8 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Generator {
-
-    private Random rand;
+    private final Random rand;
 
     public Generator() {
         rand = new Random();

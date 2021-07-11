@@ -1,6 +1,6 @@
 package serializer;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sample.Generator;
 import stubs.Laptop;
@@ -18,6 +18,6 @@ class SerializerTest {
         serializer.writeBinaryFile(laptop1, binaryFile);
 
         Laptop laptop2 = serializer.readBinaryFile(binaryFile);
-        Assert.assertEquals(laptop1, laptop2);
+        Assertions.assertEquals(laptop1, laptop2);
     }
 }
