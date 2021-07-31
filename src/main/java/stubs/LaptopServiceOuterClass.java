@@ -34,6 +34,21 @@ public final class LaptopServiceOuterClass {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_SearchLaptopResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_UploadImageRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_UploadImageRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_ImageInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_ImageInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_UploadImageResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_UploadImageResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -49,11 +64,17 @@ public final class LaptopServiceOuterClass {
       "eateLaptopResponse\022\n\n\002id\030\001 \001(\t\".\n\023Search" +
       "LaptopRequest\022\027\n\006filter\030\001 \001(\0132\007.Filter\"/" +
       "\n\024SearchLaptopResponse\022\027\n\006laptop\030\001 \001(\0132\007" +
-      ".Laptop2\217\001\n\rLaptopService\022=\n\014CreateLapto" +
-      "p\022\024.CreateLaptopRequest\032\025.CreateLaptopRe" +
-      "sponse\"\000\022?\n\014SearchLaptop\022\024.SearchLaptopR" +
-      "equest\032\025.SearchLaptopResponse\"\0000\001B\t\n\005stu" +
-      "bsP\001b\006proto3"
+      ".Laptop\"N\n\022UploadImageRequest\022\032\n\004info\030\001 " +
+      "\001(\0132\n.ImageInfoH\000\022\024\n\nchunk_data\030\002 \001(\014H\000B" +
+      "\006\n\004data\"2\n\tImageInfo\022\021\n\tlaptop_id\030\001 \001(\t\022" +
+      "\022\n\nimage_type\030\002 \001(\t\"/\n\023UploadImageRespon" +
+      "se\022\n\n\002id\030\001 \001(\t\022\014\n\004size\030\002 \001(\r2\315\001\n\rLaptopS" +
+      "ervice\022=\n\014CreateLaptop\022\024.CreateLaptopReq" +
+      "uest\032\025.CreateLaptopResponse\"\000\022?\n\014SearchL" +
+      "aptop\022\024.SearchLaptopRequest\032\025.SearchLapt" +
+      "opResponse\"\0000\001\022<\n\013UploadImage\022\023.UploadIm" +
+      "ageRequest\032\024.UploadImageResponse\"\000(\001B\t\n\005" +
+      "stubsP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -85,6 +106,24 @@ public final class LaptopServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_SearchLaptopResponse_descriptor,
         new java.lang.String[] { "Laptop", });
+    internal_static_UploadImageRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_UploadImageRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_UploadImageRequest_descriptor,
+        new java.lang.String[] { "Info", "ChunkData", "Data", });
+    internal_static_ImageInfo_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_ImageInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_ImageInfo_descriptor,
+        new java.lang.String[] { "LaptopId", "ImageType", });
+    internal_static_UploadImageResponse_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_UploadImageResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_UploadImageResponse_descriptor,
+        new java.lang.String[] { "Id", "Size", });
     stubs.LaptopMessage.getDescriptor();
     stubs.FilterMessage.getDescriptor();
   }

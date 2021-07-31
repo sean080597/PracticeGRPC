@@ -1,11 +1,12 @@
 package serializer;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import sample.Generator;
 import stubs.Laptop;
 
 import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SerializerTest {
 
@@ -18,6 +19,6 @@ class SerializerTest {
         serializer.writeBinaryFile(laptop1, binaryFile);
 
         Laptop laptop2 = serializer.readBinaryFile(binaryFile);
-        Assertions.assertEquals(laptop1, laptop2);
+        assertThat(laptop1).isEqualTo(laptop2);
     }
 }

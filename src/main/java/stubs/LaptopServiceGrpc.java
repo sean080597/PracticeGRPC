@@ -91,6 +91,38 @@ public final class LaptopServiceGrpc {
      return getSearchLaptopMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<stubs.UploadImageRequest,
+      stubs.UploadImageResponse> getUploadImageMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "UploadImage",
+      requestType = stubs.UploadImageRequest.class,
+      responseType = stubs.UploadImageResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+  public static io.grpc.MethodDescriptor<stubs.UploadImageRequest,
+      stubs.UploadImageResponse> getUploadImageMethod() {
+    io.grpc.MethodDescriptor<stubs.UploadImageRequest, stubs.UploadImageResponse> getUploadImageMethod;
+    if ((getUploadImageMethod = LaptopServiceGrpc.getUploadImageMethod) == null) {
+      synchronized (LaptopServiceGrpc.class) {
+        if ((getUploadImageMethod = LaptopServiceGrpc.getUploadImageMethod) == null) {
+          LaptopServiceGrpc.getUploadImageMethod = getUploadImageMethod = 
+              io.grpc.MethodDescriptor.<stubs.UploadImageRequest, stubs.UploadImageResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "LaptopService", "UploadImage"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  stubs.UploadImageRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  stubs.UploadImageResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new LaptopServiceMethodDescriptorSupplier("UploadImage"))
+                  .build();
+          }
+        }
+     }
+     return getUploadImageMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -132,6 +164,13 @@ public final class LaptopServiceGrpc {
       asyncUnimplementedUnaryCall(getSearchLaptopMethod(), responseObserver);
     }
 
+    /**
+     */
+    public io.grpc.stub.StreamObserver<stubs.UploadImageRequest> uploadImage(
+        io.grpc.stub.StreamObserver<stubs.UploadImageResponse> responseObserver) {
+      return asyncUnimplementedStreamingCall(getUploadImageMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -148,6 +187,13 @@ public final class LaptopServiceGrpc {
                 stubs.SearchLaptopRequest,
                 stubs.SearchLaptopResponse>(
                   this, METHODID_SEARCH_LAPTOP)))
+          .addMethod(
+            getUploadImageMethod(),
+            asyncClientStreamingCall(
+              new MethodHandlers<
+                stubs.UploadImageRequest,
+                stubs.UploadImageResponse>(
+                  this, METHODID_UPLOAD_IMAGE)))
           .build();
     }
   }
@@ -184,6 +230,14 @@ public final class LaptopServiceGrpc {
         io.grpc.stub.StreamObserver<stubs.SearchLaptopResponse> responseObserver) {
       asyncServerStreamingCall(
           getChannel().newCall(getSearchLaptopMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public io.grpc.stub.StreamObserver<stubs.UploadImageRequest> uploadImage(
+        io.grpc.stub.StreamObserver<stubs.UploadImageResponse> responseObserver) {
+      return asyncClientStreamingCall(
+          getChannel().newCall(getUploadImageMethod(), getCallOptions()), responseObserver);
     }
   }
 
@@ -250,6 +304,7 @@ public final class LaptopServiceGrpc {
 
   private static final int METHODID_CREATE_LAPTOP = 0;
   private static final int METHODID_SEARCH_LAPTOP = 1;
+  private static final int METHODID_UPLOAD_IMAGE = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -286,6 +341,9 @@ public final class LaptopServiceGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_UPLOAD_IMAGE:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.uploadImage(
+              (io.grpc.stub.StreamObserver<stubs.UploadImageResponse>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -339,6 +397,7 @@ public final class LaptopServiceGrpc {
               .setSchemaDescriptor(new LaptopServiceFileDescriptorSupplier())
               .addMethod(getCreateLaptopMethod())
               .addMethod(getSearchLaptopMethod())
+              .addMethod(getUploadImageMethod())
               .build();
         }
       }

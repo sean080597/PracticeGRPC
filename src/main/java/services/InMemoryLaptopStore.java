@@ -44,11 +44,11 @@ public class InMemoryLaptopStore implements LaptopStore {
         return;
       }
 
-      try{
-        TimeUnit.SECONDS.sleep(1);
-      }catch (InterruptedException ex){
-        ex.printStackTrace();
-      }
+//      try{
+//        TimeUnit.SECONDS.sleep(1);
+//      }catch (InterruptedException ex){
+//        ex.printStackTrace();
+//      }
       Laptop laptop = entry.getValue();
       if (isQualified(filter, laptop)){
         stream.Send(laptop.toBuilder().build());

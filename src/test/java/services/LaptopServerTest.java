@@ -5,10 +5,10 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import sample.Generator;
 import stubs.CreateLaptopRequest;
 import stubs.CreateLaptopResponse;
@@ -17,23 +17,25 @@ import stubs.LaptopServiceGrpc;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 class LaptopServerTest {
   @Rule
   public final GrpcCleanupRule grpcCleanupRule = new GrpcCleanupRule();
 
-  private LaptopStore store;
+  private LaptopStore laptopStore;
+  private DiskImageStore imageStore;
   private LaptopServer server;
   private ManagedChannel channel;
 
-  @BeforeEach
+  @Before
   void setUp() throws IOException {
     String serverName = InProcessServerBuilder.generateName();
     InProcessServerBuilder serverBuilder = InProcessServerBuilder.forName(serverName).directExecutor();
 
-    store = new InMemoryLaptopStore();
-    server = new LaptopServer(serverBuilder, 0, store);
+    laptopStore = new InMemoryLaptopStore();
+    imageStore = new DiskImageStore("img");
+    server = new LaptopServer(serverBuilder, 0, laptopStore, imageStore);
     server.start();
 
     channel = grpcCleanupRule.register(
@@ -41,7 +43,7 @@ class LaptopServerTest {
     );
   }
 
-  @AfterEach
+  @After
   void tearDown() throws InterruptedException {
     server.stop();
   }
@@ -54,11 +56,11 @@ class LaptopServerTest {
 
     LaptopServiceGrpc.LaptopServiceBlockingStub stub = LaptopServiceGrpc.newBlockingStub(channel);
     CreateLaptopResponse response = stub.createLaptop(request);
-    assertNotNull(response);
-    assertEquals(laptop.getId(), response.getId());
+    assertThat(response).isNotNull();
+    assertThat(laptop.getId()).isEqualTo(response.getId());
 
-    Laptop found = store.find(response.getId());
-    assertNotNull(found);
+    Laptop found = laptopStore.find(response.getId());
+    assertThat(found).isNotNull();
   }
 
   @Test
@@ -69,14 +71,14 @@ class LaptopServerTest {
 
     LaptopServiceGrpc.LaptopServiceBlockingStub stub = LaptopServiceGrpc.newBlockingStub(channel);
     CreateLaptopResponse response = stub.createLaptop(request);
-    assertNotNull(response);
-    assertFalse(response.getId().isEmpty());
+    assertThat(response).isNotNull();
+    assertThat(response.getId().isEmpty()).isFalse();
 
-    Laptop found = store.find(response.getId());
-    assertNotNull(found);
+    Laptop found = laptopStore.find(response.getId());
+    assertThat(found).isNotNull();
   }
 
-  @Test
+  @Test(expected = StatusRuntimeException.class)
   public void createLaptopWithInvalidID(){
     Generator generator = new Generator();
     Laptop laptop = generator.newLaptop().toBuilder().setId("invalid").build();
@@ -84,18 +86,16 @@ class LaptopServerTest {
 
     LaptopServiceGrpc.LaptopServiceBlockingStub stub = LaptopServiceGrpc.newBlockingStub(channel);
     CreateLaptopResponse response = stub.createLaptop(request);
-    assertThrows(StatusRuntimeException.class, () -> {});
   }
 
-  @Test
+  @Test(expected = StatusRuntimeException.class)
   public void createLaptopWithAlreadyExistsID() throws Exception {
     Generator generator = new Generator();
     Laptop laptop = generator.newLaptop();
-    store.save(laptop);
+    laptopStore.save(laptop);
     CreateLaptopRequest request = CreateLaptopRequest.newBuilder().setLaptop(laptop).build();
 
     LaptopServiceGrpc.LaptopServiceBlockingStub stub = LaptopServiceGrpc.newBlockingStub(channel);
     CreateLaptopResponse response = stub.createLaptop(request);
-    assertThrows(StatusRuntimeException.class, () -> {});
   }
 }
