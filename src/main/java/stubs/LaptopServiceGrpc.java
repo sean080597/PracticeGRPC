@@ -59,6 +59,38 @@ public final class LaptopServiceGrpc {
      return getCreateLaptopMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<stubs.SearchLaptopRequest,
+      stubs.SearchLaptopResponse> getSearchLaptopMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "SearchLaptop",
+      requestType = stubs.SearchLaptopRequest.class,
+      responseType = stubs.SearchLaptopResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+  public static io.grpc.MethodDescriptor<stubs.SearchLaptopRequest,
+      stubs.SearchLaptopResponse> getSearchLaptopMethod() {
+    io.grpc.MethodDescriptor<stubs.SearchLaptopRequest, stubs.SearchLaptopResponse> getSearchLaptopMethod;
+    if ((getSearchLaptopMethod = LaptopServiceGrpc.getSearchLaptopMethod) == null) {
+      synchronized (LaptopServiceGrpc.class) {
+        if ((getSearchLaptopMethod = LaptopServiceGrpc.getSearchLaptopMethod) == null) {
+          LaptopServiceGrpc.getSearchLaptopMethod = getSearchLaptopMethod = 
+              io.grpc.MethodDescriptor.<stubs.SearchLaptopRequest, stubs.SearchLaptopResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "LaptopService", "SearchLaptop"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  stubs.SearchLaptopRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  stubs.SearchLaptopResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new LaptopServiceMethodDescriptorSupplier("SearchLaptop"))
+                  .build();
+          }
+        }
+     }
+     return getSearchLaptopMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -93,6 +125,13 @@ public final class LaptopServiceGrpc {
       asyncUnimplementedUnaryCall(getCreateLaptopMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void searchLaptop(stubs.SearchLaptopRequest request,
+        io.grpc.stub.StreamObserver<stubs.SearchLaptopResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getSearchLaptopMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -102,6 +141,13 @@ public final class LaptopServiceGrpc {
                 stubs.CreateLaptopRequest,
                 stubs.CreateLaptopResponse>(
                   this, METHODID_CREATE_LAPTOP)))
+          .addMethod(
+            getSearchLaptopMethod(),
+            asyncServerStreamingCall(
+              new MethodHandlers<
+                stubs.SearchLaptopRequest,
+                stubs.SearchLaptopResponse>(
+                  this, METHODID_SEARCH_LAPTOP)))
           .build();
     }
   }
@@ -131,6 +177,14 @@ public final class LaptopServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(getCreateLaptopMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void searchLaptop(stubs.SearchLaptopRequest request,
+        io.grpc.stub.StreamObserver<stubs.SearchLaptopResponse> responseObserver) {
+      asyncServerStreamingCall(
+          getChannel().newCall(getSearchLaptopMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -156,6 +210,14 @@ public final class LaptopServiceGrpc {
     public stubs.CreateLaptopResponse createLaptop(stubs.CreateLaptopRequest request) {
       return blockingUnaryCall(
           getChannel(), getCreateLaptopMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public java.util.Iterator<stubs.SearchLaptopResponse> searchLaptop(
+        stubs.SearchLaptopRequest request) {
+      return blockingServerStreamingCall(
+          getChannel(), getSearchLaptopMethod(), getCallOptions(), request);
     }
   }
 
@@ -187,6 +249,7 @@ public final class LaptopServiceGrpc {
   }
 
   private static final int METHODID_CREATE_LAPTOP = 0;
+  private static final int METHODID_SEARCH_LAPTOP = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -208,6 +271,10 @@ public final class LaptopServiceGrpc {
         case METHODID_CREATE_LAPTOP:
           serviceImpl.createLaptop((stubs.CreateLaptopRequest) request,
               (io.grpc.stub.StreamObserver<stubs.CreateLaptopResponse>) responseObserver);
+          break;
+        case METHODID_SEARCH_LAPTOP:
+          serviceImpl.searchLaptop((stubs.SearchLaptopRequest) request,
+              (io.grpc.stub.StreamObserver<stubs.SearchLaptopResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -271,6 +338,7 @@ public final class LaptopServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new LaptopServiceFileDescriptorSupplier())
               .addMethod(getCreateLaptopMethod())
+              .addMethod(getSearchLaptopMethod())
               .build();
         }
       }

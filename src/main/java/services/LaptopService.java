@@ -3,10 +3,7 @@ package services;
 import io.grpc.Context;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
-import stubs.CreateLaptopRequest;
-import stubs.CreateLaptopResponse;
-import stubs.Laptop;
-import stubs.LaptopServiceGrpc;
+import stubs.*;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -85,5 +82,23 @@ public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
     responseObserver.onCompleted();
 
     logger.info("Saved laptop with ID: " + other.getId());
+  }
+
+  @Override
+  public void searchLaptop(SearchLaptopRequest request, StreamObserver<SearchLaptopResponse> responseObserver) {
+    Filter filter = request.getFilter();
+    logger.info("Got a search-laptop request with filter:\n" + filter);
+
+    store.Search(Context.current(), filter, new LaptopStream() {
+      @Override
+      public void Send(Laptop laptop) {
+        logger.info("Found laptop with ID: " + laptop.getId());
+        SearchLaptopResponse response = SearchLaptopResponse.newBuilder().setLaptop(laptop).build();
+        responseObserver.onNext(response);
+      }
+    });
+
+    responseObserver.onCompleted();
+    logger.info("Search laptop completed");
   }
 }

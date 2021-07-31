@@ -24,6 +24,16 @@ public final class LaptopServiceOuterClass {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_CreateLaptopResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_SearchLaptopRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_SearchLaptopRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_SearchLaptopResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_SearchLaptopResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -34,16 +44,22 @@ public final class LaptopServiceOuterClass {
   static {
     java.lang.String[] descriptorData = {
       "\n\024laptop_service.proto\032\024laptop_message.p" +
-      "roto\".\n\023CreateLaptopRequest\022\027\n\006laptop\030\001 " +
-      "\001(\0132\007.Laptop\"\"\n\024CreateLaptopResponse\022\n\n\002" +
-      "id\030\001 \001(\t2N\n\rLaptopService\022=\n\014CreateLapto" +
+      "roto\032\024filter_message.proto\".\n\023CreateLapt" +
+      "opRequest\022\027\n\006laptop\030\001 \001(\0132\007.Laptop\"\"\n\024Cr" +
+      "eateLaptopResponse\022\n\n\002id\030\001 \001(\t\".\n\023Search" +
+      "LaptopRequest\022\027\n\006filter\030\001 \001(\0132\007.Filter\"/" +
+      "\n\024SearchLaptopResponse\022\027\n\006laptop\030\001 \001(\0132\007" +
+      ".Laptop2\217\001\n\rLaptopService\022=\n\014CreateLapto" +
       "p\022\024.CreateLaptopRequest\032\025.CreateLaptopRe" +
-      "sponse\"\000B\t\n\005stubsP\001b\006proto3"
+      "sponse\"\000\022?\n\014SearchLaptop\022\024.SearchLaptopR" +
+      "equest\032\025.SearchLaptopResponse\"\0000\001B\t\n\005stu" +
+      "bsP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           stubs.LaptopMessage.getDescriptor(),
+          stubs.FilterMessage.getDescriptor(),
         });
     internal_static_CreateLaptopRequest_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -57,7 +73,20 @@ public final class LaptopServiceOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_CreateLaptopResponse_descriptor,
         new java.lang.String[] { "Id", });
+    internal_static_SearchLaptopRequest_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_SearchLaptopRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_SearchLaptopRequest_descriptor,
+        new java.lang.String[] { "Filter", });
+    internal_static_SearchLaptopResponse_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_SearchLaptopResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_SearchLaptopResponse_descriptor,
+        new java.lang.String[] { "Laptop", });
     stubs.LaptopMessage.getDescriptor();
+    stubs.FilterMessage.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

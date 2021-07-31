@@ -43,7 +43,10 @@ public class LaptopServer {
 
   public void stop() throws InterruptedException {
     if (server != null) {
-      server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
+      server.shutdown();
+      if(!server.awaitTermination(30, TimeUnit.SECONDS)){
+        server.shutdownNow();
+      }
     }
   }
 

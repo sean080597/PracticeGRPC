@@ -1,57 +1,57 @@
 {
-  "id": "082caf7a-205a-4cd9-9ed2-22818dc92af1",
-  "brand": "Apple",
-  "name": "Macbook Pro",
+  "id": "7934488a-13d5-4839-b881-b59a25e97325",
+  "brand": "Lenovo",
+  "name": "Thinkpad P53",
   "cpu": {
-    "brand": "AMD",
-    "name": "Ryzen 5 PRO 3500U",
-    "number_cores": 3,
-    "number_threads": 5,
-    "min_ghz": 2.4122589680171607,
-    "max_ghz": 4.200585115768444
+    "brand": "Intel",
+    "name": "Xeon E-2286M",
+    "number_cores": 4,
+    "number_threads": 8,
+    "min_ghz": 2.238288658659024,
+    "max_ghz": 4.2239219861780235
   },
   "ram": {
-    "value": "25",
+    "value": "18",
     "unit": "GIGABYTE"
   },
   "gpus": [{
-    "brand": "NVIDIA",
-    "name": "RTX 2060",
-    "min_ghz": 1.1909042654692932,
-    "max_ghz": 1.2199023004386187,
+    "brand": "AMD",
+    "name": "RX 580",
+    "min_ghz": 1.4564727530368136,
+    "max_ghz": 1.978325439699344,
     "memory": {
-      "value": "6",
+      "value": "3",
       "unit": "GIGABYTE"
     }
   }],
   "storages": [{
     "driver": "SSD",
     "memory": {
-      "value": "885",
+      "value": "187",
       "unit": "GIGABYTE"
     }
   }, {
     "driver": "HDD",
     "memory": {
-      "value": "6",
+      "value": "1",
       "unit": "TERABYTE"
     }
   }],
   "screen": {
-    "size_inch": 16.240784,
+    "size_inch": 16.07133,
     "resolution": {
-      "width": 2835,
-      "height": 1595
+      "width": 5816,
+      "height": 3272
     },
-    "panel": "IPS",
-    "multitouch": false
+    "panel": "OLED",
+    "multitouch": true
   },
   "keyboard": {
-    "layout": "QWERTZ",
-    "blacklit": false
+    "layout": "QWERTY",
+    "blacklit": true
   },
-  "weight_kg": 1.3284650145414194,
-  "price_usd": 2445.9225196626876,
-  "release_year": 2019,
-  "updated_at": "2021-07-11T08:25:17.114269100Z"
+  "weight_kg": 2.0806261333445946,
+  "price_usd": 3049.433661937268,
+  "release_year": 2017,
+  "updated_at": "2021-07-11T13:08:07.196267500Z"
 }
