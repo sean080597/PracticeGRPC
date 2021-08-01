@@ -214,17 +214,34 @@ public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
         double score = request.getScore();
         logger.info("received rate-laptop request: id = " + laptopId + ", score = " + score);
 
+        Laptop found = laptopStore.find(laptopId);
+        if (found == null) {
+          responseObserver.onError(
+              Status.NOT_FOUND
+                  .withDescription("laptop ID doesn't exist")
+                  .asRuntimeException()
+          );
+          return;
+        }
 
+        Rating rating = ratingStore.Add(laptopId, score);
+        RateLaptopResponse response = RateLaptopResponse.newBuilder()
+            .setLaptopId(laptopId)
+            .setRatedCount(rating.getCount())
+            .setAverageScore(rating.getSum() / rating.getCount())
+            .build();
+
+        responseObserver.onNext(response);
       }
 
       @Override
-      public void onError(Throwable throwable) {
-
+      public void onError(Throwable t) {
+        logger.warning(t.getMessage());
       }
 
       @Override
       public void onCompleted() {
-
+        responseObserver.onCompleted();
       }
     };
   }

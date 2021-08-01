@@ -4,18 +4,18 @@ import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
+import io.grpc.stub.StreamObserver;
 import io.grpc.testing.GrpcCleanupRule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import sample.Generator;
-import stubs.CreateLaptopRequest;
-import stubs.CreateLaptopResponse;
-import stubs.Laptop;
-import stubs.LaptopServiceGrpc;
+import stubs.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -99,5 +99,66 @@ public class LaptopServerTest {
 
     LaptopServiceGrpc.LaptopServiceBlockingStub stub = LaptopServiceGrpc.newBlockingStub(channel);
     CreateLaptopResponse response = stub.createLaptop(request);
+  }
+
+  @Test
+  public void rateLaptop() throws Exception {
+    Generator generator = new Generator();
+    Laptop laptop = generator.newLaptop();
+    laptopStore.save(laptop);
+
+    LaptopServiceGrpc.LaptopServiceStub stub = LaptopServiceGrpc.newStub(channel);
+    RateLaptopResponseStreamObserver responseObserver = new RateLaptopResponseStreamObserver();
+    StreamObserver<RateLaptopRequest> requestObserver = stub.rateLaptop(responseObserver);
+
+    double[] scores = {8, 7.5, 10};
+    double[] averages = {8, 7.75, 8.5};
+    int n = scores.length;
+
+    for (double score : scores) {
+      RateLaptopRequest request = RateLaptopRequest.newBuilder()
+          .setLaptopId(laptop.getId())
+          .setScore(score)
+          .build();
+      requestObserver.onNext(request);
+    }
+
+    requestObserver.onCompleted();
+    assertThat(responseObserver.err).isNull();
+    assertThat(responseObserver.completed).isTrue();
+    assertThat(responseObserver.responseList).hasSize(n);
+
+    int idx = 0;
+    for (RateLaptopResponse response : responseObserver.responseList){
+      assertThat(laptop.getId()).isEqualTo(response.getLaptopId());
+      assertThat(idx+1).isEqualTo(response.getRatedCount());
+      assertThat(averages[idx]).isEqualTo(response.getAverageScore());
+      idx++;
+    }
+  }
+
+  private static class RateLaptopResponseStreamObserver implements StreamObserver<RateLaptopResponse>{
+    public List<RateLaptopResponse> responseList;
+    public Throwable err;
+    public boolean completed;
+
+    public RateLaptopResponseStreamObserver(){
+      responseList = new LinkedList<>();
+    }
+
+    @Override
+    public void onNext(RateLaptopResponse response) {
+      responseList.add(response);
+    }
+
+    @Override
+    public void onError(Throwable t) {
+      err = t;
+    }
+
+    @Override
+    public void onCompleted() {
+      completed = true;
+    }
   }
 }

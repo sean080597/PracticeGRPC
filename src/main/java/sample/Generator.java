@@ -137,6 +137,10 @@ public class Generator {
                 .build();
     }
 
+    public double newLaptopScore() {
+        return randomInt(1, 10);
+    }
+
     private Timestamp timestampNow() {
         Instant now = Instant.now();
         return Timestamp.newBuilder()
