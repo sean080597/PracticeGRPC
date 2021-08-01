@@ -15,12 +15,14 @@ import java.util.logging.Logger;
 public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
   private static final Logger logger = Logger.getLogger(LaptopService.class.getName());
 
-  private LaptopStore laptopStore;
-  private ImageStore imageStore;
+  private final LaptopStore laptopStore;
+  private final ImageStore imageStore;
+  private final RatingStore ratingStore;
 
-  public LaptopService(LaptopStore laptopStore, ImageStore imageStore) {
+  public LaptopService(LaptopStore laptopStore, ImageStore imageStore, RatingStore ratingStore) {
     this.laptopStore = laptopStore;
     this.imageStore = imageStore;
+    this.ratingStore = ratingStore;
   }
 
   @Override
@@ -110,19 +112,30 @@ public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
   @Override
   public StreamObserver<UploadImageRequest> uploadImage(StreamObserver<UploadImageResponse> responseObserver) {
     return new StreamObserver<UploadImageRequest>() {
+      private static final int maxImageSize = 1 << 20; // 1 megabyte
       private String laptopID;
       private String imageType;
       private ByteArrayOutputStream imageData;
 
       @Override
       public void onNext(UploadImageRequest request) {
-        if(request.getDataCase() == UploadImageRequest.DataCase.INFO){
+        if (request.getDataCase() == UploadImageRequest.DataCase.INFO) {
           ImageInfo info = request.getInfo();
           logger.info("receive image info:\n" + info);
 
           laptopID = info.getLaptopId();
           imageType = info.getImageType();
           imageData = new ByteArrayOutputStream();
+
+          // Check laptop exists
+          Laptop found = laptopStore.find(laptopID);
+          if (found == null) {
+            responseObserver.onError(
+                Status.NOT_FOUND
+                    .withDescription("laptop ID doesn't exist")
+                    .asRuntimeException()
+            );
+          }
           return;
         }
 
@@ -134,6 +147,17 @@ public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
           responseObserver.onError(
               Status.INVALID_ARGUMENT
                   .withDescription("image info wasn't sent before")
+                  .asRuntimeException()
+          );
+          return;
+        }
+
+        int size = imageData.size() + chunkData.size();
+        if (size > maxImageSize) {
+          logger.info("image is too large: " + size);
+          responseObserver.onError(
+              Status.INVALID_ARGUMENT
+                  .withDescription("image is too large: " + size)
                   .asRuntimeException()
           );
           return;
@@ -177,6 +201,30 @@ public class LaptopService extends LaptopServiceGrpc.LaptopServiceImplBase {
             .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+      }
+    };
+  }
+
+  @Override
+  public StreamObserver<RateLaptopRequest> rateLaptop(StreamObserver<RateLaptopResponse> responseObserver) {
+    return new StreamObserver<RateLaptopRequest>() {
+      @Override
+      public void onNext(RateLaptopRequest request) {
+        String laptopId = request.getLaptopId();
+        double score = request.getScore();
+        logger.info("received rate-laptop request: id = " + laptopId + ", score = " + score);
+
+
+      }
+
+      @Override
+      public void onError(Throwable throwable) {
+
+      }
+
+      @Override
+      public void onCompleted() {
+
       }
     };
   }

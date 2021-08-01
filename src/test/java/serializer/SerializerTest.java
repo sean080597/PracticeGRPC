@@ -1,6 +1,8 @@
 package serializer;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import sample.Generator;
 import stubs.Laptop;
 
@@ -8,10 +10,11 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SerializerTest {
+@RunWith(MockitoJUnitRunner.class)
+public class SerializerTest {
 
     @Test
-    void writeAndReadBinaryFile() throws IOException {
+    public void writeAndReadBinaryFile() throws IOException {
         String binaryFile = "laptop.bin";
         Laptop laptop1 = new Generator().newLaptop();
 

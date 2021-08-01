@@ -19,23 +19,25 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;
 
-class LaptopServerTest {
+public class LaptopServerTest {
   @Rule
   public final GrpcCleanupRule grpcCleanupRule = new GrpcCleanupRule();
 
   private LaptopStore laptopStore;
   private DiskImageStore imageStore;
+  private InMemoryRatingStore ratingStore;
   private LaptopServer server;
   private ManagedChannel channel;
 
   @Before
-  void setUp() throws IOException {
+  public void setUp() throws IOException {
     String serverName = InProcessServerBuilder.generateName();
     InProcessServerBuilder serverBuilder = InProcessServerBuilder.forName(serverName).directExecutor();
 
     laptopStore = new InMemoryLaptopStore();
     imageStore = new DiskImageStore("img");
-    server = new LaptopServer(serverBuilder, 0, laptopStore, imageStore);
+    ratingStore = new InMemoryRatingStore();
+    server = new LaptopServer(serverBuilder, 0, laptopStore, imageStore, ratingStore);
     server.start();
 
     channel = grpcCleanupRule.register(
@@ -44,7 +46,7 @@ class LaptopServerTest {
   }
 
   @After
-  void tearDown() throws InterruptedException {
+  public void tearDown() throws InterruptedException {
     server.stop();
   }
 
